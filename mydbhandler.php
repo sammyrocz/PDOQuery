@@ -55,46 +55,81 @@ class MyDBHandler {
      * @return - array - Holding fetched data from database
      */
 
-    public function get() {
+   public function get() {
 
         $numargs = func_num_args();
-      
+
         if ($numargs > 0 && $numargs % 2 == 0) {
             $arg_list = func_get_args();
             $query = "select * from $this->tbname where ";
+
             $i = 0;
             $param = 1;
             $fields = array();
-            for (; $i <= ($numargs / 2) - 2; $i = $i + 2) {
+
+            $loopconstraint = $this->makeeven($numargs);
+            for (; $i <= $loopconstraint; $i = $i + 2) {
 
                 $query = $query . $arg_list[$i] . " = :param" . $param . " AND ";
                 $param++;
-                
             }
 
             $query = $query . $arg_list[$i] . " = :param" . $param;
-              
+
             $i = 1;
             $paramcount = 1;
-            
+
             for (; $i < $numargs; $i = $i + 2) {
                 $fields[':param' . $paramcount] = $arg_list[$i];
                 $paramcount++;
             }
 
-            
+
             $statement = $this->conn->prepare($query);
             $result = $statement->execute($fields);
             $data = $statement->fetch(PDO::FETCH_ASSOC);
-            
-            
-                return $data;
-                
-            
-            
-            } else
+
+
+            return $data;
+        } else
             return false;
     }
+
+    /*
+     * function - checkExistence
+     * @param - any number of parameters 
+     * @param - field - name of the field
+     * @param - value - value to be mathced againt that field in database
+     * @return - boolean
+     * @return - true - exists in db
+     * @return - false - doesn't exist in db
+     */
+
+    public function checkexistence() {
+
+        $numargs = func_num_args();
+
+        if ($numargs == 2) {
+            $arg_list = func_get_args();
+            $query = "select * from $this->tbname where ";
+            $query = $query . $arg_list[0] . " = :param";
+            $field = array();
+            $field[':param'] = $arg_list[1];
+            $statement = $this->conn->prepare($query);
+            $result = $statement->execute($field);
+
+            if ($result) {
+
+                if ($statement->rowCount() > 0)
+                    return true;
+                else
+                    return false;
+            } else
+                return false;
+        } else
+            return false;
+    }
+    
 	
 	/*
      * function - checkExistence
@@ -106,7 +141,7 @@ class MyDBHandler {
      * @return - false - doesn't exist in db
      */
     
-    public function checkExistence() {
+    public function checkexistence() {
 
         $numargs = func_num_args();
 
@@ -126,6 +161,16 @@ class MyDBHandler {
                 else return false;
             } else return false;
         } else return false;
+    }
+	
+	 private function makeeven($no) {
+
+        $no = $no / 2;
+        if ($no % 2 == 0) {
+            $no = $no - 1;
+        }
+
+        return $no;
     }
     
 }

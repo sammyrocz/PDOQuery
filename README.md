@@ -7,35 +7,63 @@ As Rightly said **Need is The Mother OF Invention** . I created this library as 
 
 
 ####**Functions**
-
+[TOC]
 * get - Conditional Select Statement
-* getAll - Selects All   
+* getAll - Selects All
+* checkExistence - Checks the field against database
 
---------------------------
-
-
-**Usage**
-==========
-
-##Setup
-
+#**Usage**
+###Setup
+---------
 create a object of **MyDBHandler** class and pass the PDO connection and name of the table.
 
->eg. -
-      $conn \-\> holds the connection to the database 
-       \$dboperations = new MyDbHandler($conn,"students");
+
+	$conn -> holds the connection to the database 
+	$dboperations = new MyDbHandler($conn,"students");
         
 ##**getall**
-public function getall($fetchType = PDO::FETCH_ASSOC) 
+``public function getall($fetchType = PDO::FETCH_ASSOC)``
 
->* @param - **$fetchType** - method of fetching the result eg. PDO::ASSCO , PDO::NUM,PDO::ASSOC  
->* Fetches all rows available  
->* @returns - false,array
+* @param - **$fetchType** - method of fetching the result eg. PDO::NUM,PDO::ASSOC
+* Fetches all rows available
+* @returns - false,array
      * @return - false - if some error has occurred during exceuting the query such as no such table exists
      * @return - array - Holding the multidimensional array of the fetched data from database
 
-> eg.- 
-> $dboperations ->getall() ->  _Fetches rows as associatively_
-> $dboperations->getall(PDO::FETCH_NUM) -> _Fetches row as array but numeric index_
+ eg.-
+ ``$dboperations ->getall()`` ->  _Fetches rows associatively_
+``$dboperations->getall(PDO::FETCH_NUM)`` -> _Fetches row as array but numeric index_
 
+------------
+##**get**
+``public function get(any number of param)``
+
+
+* @param - any number of parameters 
+	* no of params must be even no
+	* a logical param is collection of 2 param 
+	* 1 param represents the name of the field in the database
+	* 2 param represents the value to be checked against that param
+* @returns - false,array
+     * @return - false - if some error has occurred during exceuting the query 		such as no such table exists
+     * @return - array - Holding fetched data from database
+
+eg.- 
+a databse has field namely collegeid(int),name(varchar)
+
+``$dboperations->get("collegeid",456,"name","IIT DELHI")`` -> checks the field  collgeid against 456, name ,"IIT Delhi" and returns the object
+``$dboperations->get("collegeid",456,"name","IIT DELHI")`` **ERROR** - returns false 
+
+--------------
+##**checkexistence**
+``public function get($field,$value)``
+* @param - $field,$value 
+	 * @param - any number of parameters 
+     * @param - field - name of the field
+* @return - boolean
+     * @return - true - exists in db
+     * @return - false - doesn't exist in db
+
+eg - 
+`$dboperations->checkExistence("id","1234")` -> true if table has 1234 entry or false if no such entry exits
 
