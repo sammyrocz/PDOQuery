@@ -7,21 +7,23 @@ As Rightly said **Need is The Mother OF Invention** . I created this library as 
 
 
 ####**Functions**
-[TOC]
+
 * get - Conditional Select Statement
 * getAll - Selects All
 * checkExistence - Checks the field against database
 
 #**Usage**
-###Setup
----------
+
+Setup
+====
 create a object of **MyDBHandler** class and pass the PDO connection and name of the table.
 
 
 	$conn -> holds the connection to the database 
 	$dboperations = new MyDbHandler($conn,"students");
         
-##**getall**
+**getall**
+=========
 ``public function getall($fetchType = PDO::FETCH_ASSOC)``
 
 * @param - **$fetchType** - method of fetching the result eg. PDO::NUM,PDO::ASSOC
@@ -30,12 +32,16 @@ create a object of **MyDBHandler** class and pass the PDO connection and name of
      * @return - false - if some error has occurred during exceuting the query such as no such table exists
      * @return - array - Holding the multidimensional array of the fetched data from database
 
- eg.-
- ``$dboperations ->getall()`` ->  _Fetches rows associatively_
-``$dboperations->getall(PDO::FETCH_NUM)`` -> _Fetches row as array but numeric index_
+eg.-
+ 
+    $dboperations ->getall() ->  _Fetches rows associatively_
+	
+    $dboperations->getall(PDO::FETCH_NUM)-> _Fetches row as array but numeric 			index_
 
 ------------
-##**get**
+**get**
+======
+######The function uses typed parameter for the security purposes 
 ``public function get(any number of param)``
 
 
@@ -49,13 +55,16 @@ create a object of **MyDBHandler** class and pass the PDO connection and name of
      * @return - array - Holding fetched data from database
 
 eg.- 
-a databse has field namely collegeid(int),name(varchar)
+		
+    a databse has field namely collegeid(int),name(varchar)
 
-``$dboperations->get("collegeid",456,"name","IIT DELHI")`` -> checks the field  collgeid against 456, name ,"IIT Delhi" and returns the object
-``$dboperations->get("collegeid",456,"name","IIT DELHI")`` **ERROR** - returns false 
+	$dboperations->get("collegeid",456,"name","IIT DELHI") -> checks the field  		collgeid against 456, name ,"IIT Delhi" and returns the object
+	
+    $dboperations->get("collegeid",456,"name","IIT DELHI") -> **ERROR** - returns 		false 
 
 --------------
-##**checkexistence**
+**checkexistence**
+======
 ``public function get($field,$value)``
 * @param - $field,$value 
 	 * @param - any number of parameters 
@@ -64,6 +73,33 @@ a databse has field namely collegeid(int),name(varchar)
      * @return - true - exists in db
      * @return - false - doesn't exist in db
 
-eg - 
-`$dboperations->checkExistence("id","1234")` -> true if table has 1234 entry or false if no such entry exits
 
+eg - 
+	
+    $dboperations->checkExistence("id","1234")` -> true if table has 1234 entry or 	     false if no such entry exits
+
+--------------
+
+**insert**
+======
+
+######The function uses typed parameter for the security purposes and set option to insert the data 
+
+``public function insert(any number of param)``
+
+* @param - any number of parameters 
+	* no of params must be even no
+	* a logical param is collection of 2 param 
+	* 1 param represents the name of the field in the database
+	* 2 param represents the value to be inserted against that param
+* @returns - boolean
+     * @return - false - if data is not added into the table
+     * @return - array - data is added into the table
+
+eg.- 
+	
+    a database has field namely collegeid(int),name(varchar)
+
+	$dboperations->insert("collegeid",456,"name","IIT DELHI")-> inserts the data 	into db and return true
+	
+    $dboperations->insert("collegeid",456,"name","IIT DELHI") **ERROR** - returns 	false 

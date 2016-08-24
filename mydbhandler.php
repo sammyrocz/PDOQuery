@@ -172,5 +172,61 @@ class MyDBHandler {
 
         return $no;
     }
+	
+	 /*
+     * function - insertset
+     * #Paramter rule#
+     * # params must be even no
+     * # a logical param is collection of 2 param 
+     * # 1 param represents the name of the field in the database
+     * # 2 param represents the value to be checked against that param
+     * @returns - boolean
+     * @return - false - if data is not added into the table
+     * @return - array - data is added into the table
+     */
+
+    public function insert() {
+
+        $numargs = func_num_args();
+
+        if ($numargs > 0 && $numargs % 2 == 0) {
+            $arg_list = func_get_args();
+            $query = "Insert INTO $this->tbname SET ";
+            $i = 0;
+            $param = 1;
+            $fields = array();
+            $loopconstraint = $this->makeeven($numargs);
+            for (; $i <= $loopconstraint; $i = $i + 2) {
+
+                $query = $query . $arg_list[$i] . " = :param" . $param . ", ";
+                $param++;
+            }
+
+            $query = $query . $arg_list[$i] . " = :param" . $param;
+
+            $i = 1;
+            $paramcount = 1;
+
+            for (; $i < $numargs; $i = $i + 2) {
+                $fields[':param' . $paramcount] = $arg_list[$i];
+                $paramcount++;
+            }
+
+         
+
+
+
+            $statement = $this->conn->prepare($query);
+            $result = $statement->execute($fields);
+
+            if ($result) {
+
+                return true;
+            } else {
+                return false;
+            }
+        } else
+            return false;
+    }
     
 }
