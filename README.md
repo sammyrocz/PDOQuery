@@ -36,7 +36,7 @@ eg.-
  
     $dboperations ->getall() ->  _Fetches rows associatively_
 	
-    $dboperations->getall(PDO::FETCH_NUM)-> _Fetches row as array but numeric 			index_
+    $dboperations->getall(PDO::FETCH_NUM)-> _Fetches row as array but numeric index_
 
 ------------
 **get**
@@ -58,9 +58,9 @@ eg.-
 		
     a databse has field namely collegeid(int),name(varchar)
 
-	$dboperations->get("collegeid",456,"name","IIT DELHI") -> checks the field  		collgeid against 456, name ,"IIT Delhi" and returns the object
+	$dboperations->get("collegeid",456,"name","IIT DELHI") -> checks the field collgeid against 456, name ,"IIT Delhi" and returns the object
 	
-    $dboperations->get("collegeid",456,"name","IIT DELHI") -> **ERROR** - returns 		false 
+    $dboperations->get("collegeid",456,"name","IIT DELHI") -> **ERROR** - returns false 
 
 --------------
 **checkexistence**
@@ -76,7 +76,7 @@ eg.-
 
 eg - 
 	
-    $dboperations->checkExistence("id","1234")` -> true if table has 1234 entry or 	     false if no such entry exits
+    $dboperations->checkExistence("id","1234")` -> true if table has 1234 entry or false if no such entry exits
 
 --------------
 
@@ -100,6 +100,6 @@ eg.-
 	
     a database has field namely collegeid(int),name(varchar)
 
-	$dboperations->insert("collegeid",456,"name","IIT DELHI")-> inserts the data 	into db and return true
+	$dboperations->insert("collegeid",456,"name","IIT DELHI")-> inserts the data into db and return true
 	
-    $dboperations->insert("collegeid",456,"name","IIT DELHI") **ERROR** - returns 	false 
+    $dboperations->insert("collegeid",456,"name","IIT DELHI") **ERROR** - returns false 
