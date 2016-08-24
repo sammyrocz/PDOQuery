@@ -22,11 +22,11 @@ As Rightly said **Need is The Mother OF Invention** . I created this library as 
 create a object of **MyDBHandler** class and pass the PDO connection and name of the table.
 
 >eg. -
-      \$conn \-\> holds the connection to the database 
+      $conn \-\> holds the connection to the database 
        \$dboperations = new MyDbHandler($conn,"students");
         
-####**getall**
-public function getall($fetchType = PDO::FETCH_ASSOC) #
+##**getall**
+public function getall($fetchType = PDO::FETCH_ASSOC) 
 
 >* @param - **$fetchType** - method of fetching the result eg. PDO::ASSCO , PDO::NUM,PDO::ASSOC  
 >* Fetches all rows available  
