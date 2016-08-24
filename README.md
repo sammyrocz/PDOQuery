@@ -8,8 +8,8 @@ As Rightly said **Need is The Mother OF Invention** . I created this library as 
 
 ####**Functions**
 
-> * get - Conditional Select Statement
-> * getAll - Selects All   
+get - Conditional Select Statement
+getAll - Selects All   
 
 --------------------------
 
