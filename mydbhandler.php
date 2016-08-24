@@ -95,5 +95,37 @@ class MyDBHandler {
             } else
             return false;
     }
+	
+	/*
+     * function - checkExistence
+     * @param - any number of parameters 
+     * @param - field - name of the field
+     * @param - value - value to be mathced againt that field in database
+     * @return - boolean
+     * @return - true - exists in db
+     * @return - false - doesn't exist in db
+     */
+    
+    public function checkExistence() {
+
+        $numargs = func_num_args();
+
+        if ($numargs == 2) {
+            $arg_list = func_get_args();
+            $query = "select * from $this->tbname where ";
+            $query = $query . $arg_list[0] . " = :param";
+            $field = array();
+            $field[':param'] = $arg_list[1];
+            $statement = $this->conn->prepare($query);
+            $result = $statement->execute($field);
+
+            if ($result) {
+                
+                if($statement->rowCount() > 0)
+                    return true;
+                else return false;
+            } else return false;
+        } else return false;
+    }
     
 }
