@@ -15,7 +15,10 @@ class MyDBHandler {
     public function __construct($conn, $tablename) {
         $this->conn = $conn;
         $this->tbname = $tablename;
-        
+        if(!$this->tableexists())
+        {
+            die("NO SUCH TABLE");
+        }
     }
 
     /*
@@ -221,6 +224,16 @@ class MyDBHandler {
        
   }
 
+  function tableexists() {
+
+    try {
+        $result = $this->conn->query("SELECT 1 FROM $this->tbname LIMIT 1");
+    } catch (Exception $e) {
+        return FALSE;
+    }
+
+    return true;
+}
 
 
 }

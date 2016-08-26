@@ -12,6 +12,7 @@ As Rightly said **Need is The Mother OF Invention** . I created this library as 
 * getAll - Selects All
 * checkexistence - Checks the field against database
 * insert - inserts the data into database
+* delete - delets the entry from the table
 
 #**Usage**
 
@@ -22,6 +23,9 @@ create a object of **MyDBHandler** class and pass the PDO connection and name of
 
 	$conn -> holds the connection to the database 
 	$dboperations = new MyDbHandler($conn,"students");
+
+If no such table exists die error is thrown
+
 ---------
 **getall**
 =========
