@@ -10,7 +10,8 @@ As Rightly said **Need is The Mother OF Invention** . I created this library as 
 
 * get - Conditional Select Statement
 * getAll - Selects All
-* checkExistence - Checks the field against database
+* checkexistence - Checks the field against database
+* insert - inserts the data into database
 
 #**Usage**
 
@@ -21,7 +22,7 @@ create a object of **MyDBHandler** class and pass the PDO connection and name of
 
 	$conn -> holds the connection to the database 
 	$dboperations = new MyDbHandler($conn,"students");
-        
+---------
 **getall**
 =========
 ``public function getall($fetchType = PDO::FETCH_ASSOC)``
@@ -41,7 +42,7 @@ eg.-
 ------------
 **get**
 ======
-######The function uses typed parameter for the security purposes 
+######The function uses typed parameter internally
 ``public function get(any number of param)``
 
 
@@ -65,7 +66,7 @@ eg.-
 --------------
 **checkexistence**
 ======
-``public function get($field,$value)``
+``public function checkexistence($field,$value)``
 * @param - $field,$value 
 	 * @param - any number of parameters 
      * @param - field - name of the field
@@ -83,7 +84,7 @@ eg -
 **insert**
 ======
 
-######The function uses typed parameter for the security purposes and set option to insert the data 
+######The function uses typed parameter internally
 
 ``public function insert(any number of param)``
 
@@ -103,3 +104,23 @@ eg.-
 	$dboperations->insert("collegeid",456,"name","IIT DELHI")-> inserts the data into db and return true
 	
     $dboperations->insert("collegeid",456,"name","IIT DELHI") **ERROR** - returns false 
+    
+-------
+**delete**
+======
+######The function uses typed parameter internally
+
+``public function delete($field,$value)``
+* @param - $field,$value 
+	 * @param - any number of parameters 
+     * @param - field - name of the field
+* @return - boolean
+     * @return - true - deleted from db
+     * @return - false - some error has occurred
+
+
+eg - 
+	
+    $dboperations->delete("id","1234")` -> true if table has 1234 entry or false if some error has occurred ( if the entry doesnt exits its returns true because its logically deleted)
+
+--------------

@@ -15,6 +15,7 @@ class MyDBHandler {
     public function __construct($conn, $tablename) {
         $this->conn = $conn;
         $this->tbname = $tablename;
+        
     }
 
     /*
@@ -38,8 +39,6 @@ class MyDBHandler {
         } else {
             return false;
         }
-        
-       
     }
 
     /*
@@ -55,7 +54,7 @@ class MyDBHandler {
      * @return - array - Holding fetched data from database
      */
 
-   public function get() {
+    public function get() {
 
         $numargs = func_num_args();
 
@@ -67,8 +66,7 @@ class MyDBHandler {
             $param = 1;
             $fields = array();
 
-            $loopconstraint = $this->makeeven($numargs);
-            for (; $i <= $loopconstraint; $i = $i + 2) {
+            for (; $i < $numargs-2; $i = $i + 2) {
 
                 $query = $query . $arg_list[$i] . " = :param" . $param . " AND ";
                 $param++;
@@ -97,7 +95,7 @@ class MyDBHandler {
 
     /*
      * function - checkExistence
-     * @param - any number of parameters 
+     * @param - 2 parameters 
      * @param - field - name of the field
      * @param - value - value to be mathced againt that field in database
      * @return - boolean
@@ -130,50 +128,7 @@ class MyDBHandler {
             return false;
     }
     
-	
-	/*
-     * function - checkExistence
-     * @param - any number of parameters 
-     * @param - field - name of the field
-     * @param - value - value to be mathced againt that field in database
-     * @return - boolean
-     * @return - true - exists in db
-     * @return - false - doesn't exist in db
-     */
-    
-    public function checkexistence() {
-
-        $numargs = func_num_args();
-
-        if ($numargs == 2) {
-            $arg_list = func_get_args();
-            $query = "select * from $this->tbname where ";
-            $query = $query . $arg_list[0] . " = :param";
-            $field = array();
-            $field[':param'] = $arg_list[1];
-            $statement = $this->conn->prepare($query);
-            $result = $statement->execute($field);
-
-            if ($result) {
-                
-                if($statement->rowCount() > 0)
-                    return true;
-                else return false;
-            } else return false;
-        } else return false;
-    }
-	
-	 private function makeeven($no) {
-
-        $no = $no / 2;
-        if ($no % 2 == 0) {
-            $no = $no - 1;
-        }
-
-        return $no;
-    }
-	
-	 /*
+    /*
      * function - insertset
      * #Paramter rule#
      * # params must be even no
@@ -195,8 +150,7 @@ class MyDBHandler {
             $i = 0;
             $param = 1;
             $fields = array();
-            $loopconstraint = $this->makeeven($numargs);
-            for (; $i <= $loopconstraint; $i = $i + 2) {
+            for (; $i < $numargs-2; $i = $i + 2) {
 
                 $query = $query . $arg_list[$i] . " = :param" . $param . ", ";
                 $param++;
@@ -229,4 +183,44 @@ class MyDBHandler {
             return false;
     }
     
+    /*
+     * function - delete
+     * @param - 2 parameters 
+     * @param - field - name of the field
+     * @param - value - value to be mathced againt that field in database
+     * @return - boolean
+     * @return - true - deleted
+     * @return - false - some error has occured
+     */
+  public function delete(){
+      
+       $numargs = func_num_args();
+       
+        if ($numargs > 0 && $numargs % 2 == 0) {
+        
+            $arg_list = func_get_args();
+            $query = "delete from $this->tbname where  ";
+         
+             $query = $query . $arg_list[0] . " = :param";
+             $fields = array();
+             $fields[':param'] = $arg_list[1];
+             $statement = $this->conn->prepare($query);
+             $result  = $statement->execute($fields);
+             
+             if(!$this->checkexistence($arg_list[0],$arg_list[1])){
+                 
+                 return true;
+             }
+             
+             if($result){
+                 return true;
+             } else return true;
+             
+        }
+        
+       
+  }
+
+
+
 }
