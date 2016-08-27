@@ -12,7 +12,9 @@ As Rightly said **Need is The Mother OF Invention** . I created this library as 
 * getAll - Selects All
 * checkexistence - Checks the field against database
 * insert - inserts the data into database
-* delete - delets the entry from the table
+* delete - deletes the entry specified
+* getfields - conditional select statement (returns selected field)
+
 
 #**Usage**
 
@@ -23,9 +25,6 @@ create a object of **MyDBHandler** class and pass the PDO connection and name of
 
 	$conn -> holds the connection to the database 
 	$dboperations = new MyDbHandler($conn,"students");
-
-If no such table exists die error is thrown
-
 ---------
 **getall**
 =========
@@ -39,9 +38,9 @@ If no such table exists die error is thrown
 
 eg.-
  
-    $dboperations ->getall() ->  _Fetches rows associatively_
+    $dboperations ->getall() ->  Fetches rows associatively
 	
-    $dboperations->getall(PDO::FETCH_NUM)-> _Fetches row as array but numeric index_
+    $dboperations->getall(PDO::FETCH_NUM)->  Fetches row as array but numeric index
 
 ------------
 **get**
@@ -68,6 +67,34 @@ eg.-
     $dboperations->get("collegeid",456,"name","IIT DELHI") -> **ERROR** - returns false 
 
 --------------
+
+**getfields**
+======
+######The function uses typed parameter internally
+``public function get(any number of param)``
+
+
+* @param - any number of parameters 
+	 * 1 param - specifies the no of fields to select
+     * 2 - list of fields to select
+     * 3 - rules to select the param (can be empty)
+     *  after specifying the fields next is the rule (fileds checked against specified value) 
+     *  rules must be in pair
+     *  first param must be a name of field and second is the value to check against that field
+
+* @returns - false,array
+     * @return - false - some error has occured
+     * @return - array - associative array of fetched data from database
+
+eg.- 
+		
+    a databse has field namely collegeid(int),name(varchar)
+
+	 $dboperations->getfields("2","id","name") -> select id,name from table 
+	
+    $dboperations->get("1",name","id",1234) -> select name from table where id = 1234
+---------------
+
 **checkexistence**
 ======
 ``public function checkexistence($field,$value)``

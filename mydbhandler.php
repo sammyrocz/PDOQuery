@@ -235,5 +235,79 @@ class MyDBHandler {
     return true;
 }
 
+    /*
+     * fucntion - getfields
+     * @param - any number of param
+     * ****param rules*******
+     * #1 param - specifies the no of fields to select
+     * #2 - list of fields to select
+     * #3 - rules to select the param (can be empty)
+     * # after specifying the fields next is the rule (fileds checked against specified value) 
+     * # rules must be in pair
+     * # first param must be a name of field and second is the value to check against that field
+     * @returns - false,array
+     * @return - false - some error has occured
+     * @return - array - associative array of fetched data from database
+     */
+
+    public function getfields() {
+
+        $numargs = func_num_args();
+
+        if ($numargs > 0) {
+            $fields = array();
+            $arg_list = func_get_args();
+            $fieldsno = $arg_list[0];
+            $query = "select ";
+            $i = 1;
+            for (; $i < $fieldsno; $i++) {
+                $query = $query . $arg_list[$i] . ", ";
+            }
+
+            if ($fieldsno > 0) {
+                $query = $query . $arg_list[$i] . " ";
+                $i++;
+            }
+
+            $query = $query . "from $this->tbname ";
+
+            $numargs = $numargs - $i;
+            array_splice($arg_list, 0, $i);
+        
+            if ($numargs > 0 && $numargs % 2 == 0) {
+
+                $query = $query . " where ";
+                $i = 0;
+                $param = 1;
+
+                for (; $i < $numargs - 2; $i = $i + 2) {
+
+                    $query = $query . $arg_list[$i] . " = :param" . $param . " AND ";
+                    $param++;
+                }
+
+                $query = $query . $arg_list[$i] . " = :param" . $param;
+
+                $i = 1;
+                $paramcount = 1;
+
+                for (; $i < $numargs; $i = $i + 2) {
+                    $fields[':param' . $paramcount] = $arg_list[$i];
+                    $paramcount++;
+                }
+            }
+            $statement = $this->conn->prepare($query);
+            $result = $statement->execute($fields);
+
+            $data = $statement->fetchAll(PDO::FETCH_ASSOC);
+            if ($result) {
+               
+                return $data;
+            } else
+                return false;
+        }
+    }
+
+   
 
 }
