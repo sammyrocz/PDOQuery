@@ -71,7 +71,7 @@ eg.-
 **getfields**
 ======
 ######The function uses typed parameter internally
-``public function get(any number of param)``
+``public function getfeilds(any number of param)``
 
 
 * @param - any number of parameters 
@@ -92,7 +92,7 @@ eg.-
 
 	 $dboperations->getfields("2","id","name") -> select id,name from table 
 	
-    $dboperations->get("1",name","id",1234) -> select name from table where id = 1234
+    $dboperations->getfields("1",name","id",1234) -> select name from table where id = 1234
 ---------------
 
 **checkexistence**
