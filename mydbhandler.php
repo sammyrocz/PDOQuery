@@ -188,41 +188,55 @@ class MyDBHandler {
     
     /*
      * function - delete
-     * @param - 2 parameters 
-     * @param - field - name of the field
-     * @param - value - value to be mathced againt that field in database
-     * @return - boolean
-     * @return - true - deleted
-     * @return - false - some error has occured
+     * @param - any number of parameters 
+     * #Paramter rule#
+     * # params must be even no
+     * # a logical param is collection of 2 param 
+     * # 1 param represents the name of the field in the database
+     * # 2 param represents the value to be checked against that param
+     * @returns - boolean
+     * @return - false - some error has occurred
+     * @return - true - data is deleted from database
      */
-  public function delete(){
-      
-       $numargs = func_num_args();
-       
+
+    public function delete() {
+    $numargs = func_num_args();
+
         if ($numargs > 0 && $numargs % 2 == 0) {
-        
             $arg_list = func_get_args();
-            $query = "delete from $this->tbname where  ";
-         
-             $query = $query . $arg_list[0] . " = :param";
-             $fields = array();
-             $fields[':param'] = $arg_list[1];
-             $statement = $this->conn->prepare($query);
-             $result  = $statement->execute($fields);
-             
-             if(!$this->checkexistence($arg_list[0],$arg_list[1])){
-                 
-                 return true;
-             }
-             
-             if($result){
-                 return true;
-             } else return true;
-             
-        }
-        
-       
-  }
+            $query = "delete from $this->tbname where ";
+
+            $i = 0;
+            $param = 1;
+            $fields = array();
+
+            for (; $i < $numargs - 2; $i = $i + 2) {
+
+                $query = $query . $arg_list[$i] . " = :param" . $param . " AND ";
+                $param++;
+            }
+
+            $query = $query . $arg_list[$i] . " = :param" . $param;
+
+            $i = 1;
+            $paramcount = 1;
+
+            for (; $i < $numargs; $i = $i + 2) {
+                $fields[':param' . $paramcount] = $arg_list[$i];
+                $paramcount++;
+            }
+
+
+            $statement = $this->conn->prepare($query);
+            $result = $statement->execute($fields);
+           
+            if($result)
+                return true;
+            else return false;
+
+        } else
+            return false;
+    }
 
   function tableexists() {
 

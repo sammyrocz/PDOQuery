@@ -46,7 +46,7 @@ eg.-
 ------------
 **get**
 ======
-######The function uses typed parameter internally
+######The function uses typed parameter and prepaared statements internally
 ``public function get(any number of param)``
 
 
@@ -71,7 +71,7 @@ eg.-
 
 **getfields**
 ======
-######The function uses typed parameter internally
+######The function uses typed parameter and prepared statements internally
 ``public function getfeilds(any number of param)``
 
 
@@ -116,7 +116,7 @@ eg -
 **insert**
 ======
 
-######The function uses typed parameter internally
+######The function uses typed parameter and prepared statements internally
 
 ``public function insert(any number of param)``
 
@@ -125,13 +125,13 @@ eg -
 	* a logical param is collection of 2 param 
 	* 1 param represents the name of the field in the database
 	* 2 param represents the value to be inserted against that param
-* @returns - boolean
+* @returns - false,array
      * @return - false - if data is not added into the table
      * @return - array - data is added into the table
 
 eg.- 
 	
-    a database has field namely collegeid(int),name(varchar)
+    a table has field namely collegeid(int),name(varchar)
 
 	$dboperations->insert("collegeid",456,"name","IIT DELHI")-> inserts the data into db and return true
 	
@@ -140,23 +140,25 @@ eg.-
 -------
 **delete**
 ======
+
 ######The function uses typed parameter internally
 
-``public function delete($field,$value)``
-* @param - $field,$value 
-	   * @param - field - name of the field
-       * @param value - value to be checked against the field inside a record
-* @return - boolean
-     * @return - true - deleted from db
-     * @return - false - some error has occurred
+``public function delete(any number of param)``
 
+* @param - any number of parameters 
+	* no of params must be even no
+	* a logical param is collection of 2 param 
+	* 1 param represents the name of the field in the database
+	* 2 param represents the value to be matched against that param
+* @returns - boolean
+     * @return - false - some error has occured
+     * @return - true - data is deleted from the table
 
-eg - 
+eg.- 
 	
-    $dboperations->delete("id","1234")` -> true if table has 1234 entry or false if some error has occurred ( if the entry doesnt exits its returns true because its logically deleted)
-
---------------
-
+  
+	$dboperations->delete("collegeid",456,"name","IIT DELHI")-> delete from table where collegeid = 456 AND name = "IIT DELHI"
+-------
 **update**
 ======
 ######The function uses typed parameter internally
