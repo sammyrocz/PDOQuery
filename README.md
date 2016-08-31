@@ -14,6 +14,7 @@ As Rightly said **Need is The Mother OF Invention** . I created this library as 
 * insert - inserts the data into database
 * delete - deletes the entry specified
 * getfields - conditional select statement (returns selected field)
+* update - updates the record into the database
 
 
 #**Usage**
@@ -143,8 +144,8 @@ eg.-
 
 ``public function delete($field,$value)``
 * @param - $field,$value 
-	 * @param - any number of parameters 
-     * @param - field - name of the field
+	   * @param - field - name of the field
+       * @param value - value to be checked against the field inside a record
 * @return - boolean
      * @return - true - deleted from db
      * @return - false - some error has occurred
@@ -153,5 +154,28 @@ eg.-
 eg - 
 	
     $dboperations->delete("id","1234")` -> true if table has 1234 entry or false if some error has occurred ( if the entry doesnt exits its returns true because its logically deleted)
+
+--------------
+
+**update**
+======
+######The function uses typed parameter internally
+
+``public function update(any no of param)``
+* @param - n no of param 
+     * n >= 5
+     * 1 param represents the no of the field to update in the database
+     * 2 - valueof(param(1)) param represents the field name and value to update
+     * after the no of valueof(param(1)) - param reprsents a pair of params checked againt database
+     	* 1 param represnts the field name in database
+     	* 2 param represents the value 
+* @return - boolean
+     * @return - true - updated into db
+     * @return - false - some error has occurred
+
+
+eg - 
+	
+    $dboperations->update(2,"name","sanjay","email","sanjay@gmail.com","id",1234,sid,7691)-> update table set name = "sanjay",email = "sanjay@gmail.com" where id = 1234,sid = 7691 
 
 --------------

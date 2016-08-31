@@ -308,6 +308,63 @@ class MyDBHandler {
         }
     }
 
+	
+    /*
+     * function - update
+     * #Paramter rule#
+     * # can be n no of parameters
+     * # n >= 5
+     * # 1 param represents the no of the field to update in the database
+     * # 2 - valueof(param(1)) param represents the field name and value to update
+     * # after the no of valueof(param(1)) - param reprsents a pair of params checked againt database
+     *  # 1 param represnts the field name in database
+     *  # 2 param represents the value
+     * @returns - boolean
+     * @return - false - if data is not updated into table
+     * @return - true - data is updated into the table
+     */
+    public function update() {
+
+        $numargs = func_num_args();
+
+        if ($numargs >= 5) {
+
+            $query = "update $this->tbname set ";
+            $arg_list = func_get_args();
+
+            if ($arg_list[0] == 0)
+                return false;
+            $fields = array();
+            $i = 1;
+            $paramcount = 1;
+            for (; $i <= ($arg_list[0] * 2 - 2); $i = $i + 2, $paramcount++) {
+                $query = $query . $arg_list[$i] . "= :param" . $paramcount . ", ";
+                $fields[':param' . $paramcount] = $arg_list[$i + 1];
+            }
+
+            $query = $query . $arg_list[$i] . "= :param" . $paramcount . " where ";
+            $fields[':param' . $paramcount] = $arg_list[$i + 1];
+            array_splice($arg_list, 0, $i + 2);
+            $numargs = count($arg_list);
+            $k = 0;
+            $paramcount++;
+            for (; $k < $numargs - 2; $k = $k + 2, $paramcount++) {
+                $query = $query . $arg_list[$k] . "= :param" . $paramcount . " AND ";
+                $fields[':param' . $paramcount] = $arg_list[$k + 1];
+            }
+
+            $query = $query . $arg_list[$k] . "= :param" . $paramcount;
+            $fields[':param' . $paramcount] = $arg_list[$k + 1];
+
+            $statement = $this->conn->prepare($query);
+            $result = $statement->execute($fields);
+            if($result)
+                return true;
+            else return false;
+            
+            } else
+            return fasle;
+    }
    
 
 }
