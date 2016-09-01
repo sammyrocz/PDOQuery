@@ -69,7 +69,7 @@ class MyDBHandler {
             $param = 1;
             $fields = array();
 
-            for (; $i < $numargs-2; $i = $i + 2) {
+            for (; $i < $numargs - 2; $i = $i + 2) {
 
                 $query = $query . $arg_list[$i] . " = :param" . $param . " AND ";
                 $param++;
@@ -88,10 +88,22 @@ class MyDBHandler {
 
             $statement = $this->conn->prepare($query);
             $result = $statement->execute($fields);
-            $data = $statement->fetch(PDO::FETCH_ASSOC);
+            $data = $statement->fetchAll(PDO::FETCH_ASSOC);
+            if($result){
+               
+                switch (count($data)){
+                    
+                    case 0: return false;
+                        break;
+                    case 1 : return $data[0];
+                        break;
+                    
+                    default : return $data;
+                        break;
+                }
+                
+            } else return false;
 
-
-            return $data;
         } else
             return false;
     }
@@ -264,7 +276,7 @@ class MyDBHandler {
      * @return - array - associative array of fetched data from database
      */
 
-    public function getfields() {
+      public function getfields() {
 
         $numargs = func_num_args();
 
@@ -287,7 +299,7 @@ class MyDBHandler {
 
             $numargs = $numargs - $i;
             array_splice($arg_list, 0, $i);
-        
+
             if ($numargs > 0 && $numargs % 2 == 0) {
 
                 $query = $query . " where ";
@@ -315,8 +327,18 @@ class MyDBHandler {
 
             $data = $statement->fetchAll(PDO::FETCH_ASSOC);
             if ($result) {
-               
-                return $data;
+
+                switch (count($data)){
+                    
+                    case 0: return false;
+                        break;
+                    case 1 : return $data[0];
+                        break;
+                    
+                    default : return $data;
+                        break;
+                }
+                
             } else
                 return false;
         }
