@@ -1,7 +1,7 @@
 PHP PDO SQL QUERY LIBRARY
 ========================
 
-As Rightly said **Need is The Mother OF Invention** . I created this library as I have to write same functions many times and I realized that  recreating the wheel isn't good. 
+As Rightly said **Need is The Mother OF Invention** . I created this library as I have to write same functions many times.
 ----------
 
 
